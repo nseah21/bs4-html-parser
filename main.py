@@ -64,8 +64,8 @@ def get_test_data():
         affected_services=["Pantry arcade machine", "Level 11 pool table", "Old tea hut coffee steamer"]
     )]
 
-def update_html_with_maintenance_rows(filename:str, maintenance_rows: List[MaintenanceRow]):
-    with open(filename) as fp:
+def update_html_with_maintenance_rows(filename_in:str, filename_out: str, maintenance_rows: List[MaintenanceRow]):
+    with open(filename_in) as fp:
         soup = BeautifulSoup(fp, "html.parser")
 
         for tag in soup.select("tr")[1:]:
@@ -92,12 +92,12 @@ def update_html_with_maintenance_rows(filename:str, maintenance_rows: List[Maint
 
             soup.html.tbody.append(table_row)
 
-        with open("maintenance.copy.html", "wb") as f_op:
+        with open(filename_out, "wb") as f_op:
             f_op.write(soup.prettify("utf-8"))
 
 def main():
     get_maintenance_rows_from_html("pages/maintenance.html")
-    update_html_with_maintenance_rows("pages/maintenance.copy.html", get_test_data())    
+    update_html_with_maintenance_rows("pages/maintenance.html", "pages/maintenance_copy.html", get_test_data())    
 
 if __name__ == "__main__":
     main()
